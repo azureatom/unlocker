@@ -10,6 +10,10 @@ macOS Unlocker V3.0 for VMware Workstation
 |                                                                             |
 +-----------------------------------------------------------------------------+
 
+windows打包.py为.exe
+pip install pyinstaller
+pyinstaller.exe -F gettools.py
+
 1. Introduction
 ---------------
 
