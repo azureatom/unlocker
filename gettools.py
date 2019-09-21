@@ -79,34 +79,7 @@ def main():
         sys.exit(1)
 
     # Setup url and file paths
-    url = 'http://softwareupdate.vmware.com/cds/vmw-desktop/fusion/'
     dest = os.path.dirname(os.path.abspath(__file__))
-
-    # Re-create the tools folder
-    shutil.rmtree(dest + '/tools', True)
-    os.mkdir(dest + '/tools')
-
-    # Get the list of Fusion releases
-    # And get the last item in the ul/li tags
-    response = urlopen(url)
-    html = response.read()
-    parser = CDSParser()
-    parser.feed(str(html))
-    url = url + parser.HTMLDATA[-1] + '/'
-    parser.clean()
-
-    # Open the latest release page
-    # And build file URL
-    response = urlopen(url)
-    html = response.read()
-    parser.feed(str(html))
-    urlpost15 = url + parser.HTMLDATA[-1] + '/packages/com.vmware.fusion.tools.darwin.zip.tar'
-    urlpre15 = url + parser.HTMLDATA[-1] + '/packages/com.vmware.fusion.tools.darwinPre15.zip.tar'
-    parser.clean()
-
-    # Download the darwin.iso tgz file
-    print('Retrieving Darwin tools from: ' + urlpost15)
-    urlretrieve(urlpost15, convertpath(dest + '/tools/com.vmware.fusion.tools.darwin.zip.tar'))
 
     # Extract the tar to zip
     tar = tarfile.open(convertpath(dest + '/tools/com.vmware.fusion.tools.darwin.zip.tar'), 'r')
@@ -127,10 +100,6 @@ def main():
     shutil.rmtree(convertpath(dest + '/tools/payload'), True)
     os.remove(convertpath(dest + '/tools/com.vmware.fusion.tools.darwin.zip.tar'))
     os.remove(convertpath(dest + '/tools/com.vmware.fusion.tools.darwin.zip'))
-
-    # Download the darwinPre15.iso tgz file
-    print('Retrieving DarwinPre15 tools from: ' + urlpre15)
-    urlretrieve(urlpre15, convertpath(dest + '/tools/com.vmware.fusion.tools.darwinPre15.zip.tar'))
 
     # Extract the tar to zip
     tar = tarfile.open(convertpath(dest + '/tools/com.vmware.fusion.tools.darwinPre15.zip.tar'), 'r')
